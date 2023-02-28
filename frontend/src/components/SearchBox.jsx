@@ -21,7 +21,7 @@ const SearchBox = () => {
 
   // Screen
   return (
-    <Form onSubmit={submitHandler} inline='true'>
+    <Form onSubmit={submitHandler} className='d-flex'>
       <Form.Control
         type='text'
         name='q'

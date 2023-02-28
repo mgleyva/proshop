@@ -11,13 +11,12 @@ import {
   ListGroupItem,
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useMercadopago } from 'react-sdk-mercadopago'
 
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import {
   getOrderDetails,
-  payOrder,
+  //payOrder,
   deliverOrder,
 } from '../actions/orderActions'
 import { orderPayReset } from '../slices/OrderPay'
@@ -27,14 +26,6 @@ const OrderScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const orderId = useParams()
-
-  // mercadopago SDK credentials
-  const mercadoPago = useMercadopago.v2(
-    'TEST-b01fcb36-0499-4281-b363-7f0ef1ec4cef',
-    {
-      locale: 'es-CO',
-    }
-  )
 
   // Get state from redux
   const orderDetails = useSelector((state) => state.orderDetails)
@@ -55,6 +46,8 @@ const OrderScreen = () => {
 
   // Set variables
   const [rendered, setRendered] = useState(false)
+  const [payUSignature, setPayUSignature] = useState('')
+  const [payUConfirmation, setPayUConfirmation] = useState('')
 
   if (!loading) {
     // Calculate prices
@@ -76,34 +69,30 @@ const OrderScreen = () => {
       navigate('/login')
     }
 
-    // mercadopago SDK script
-    const mercadoPagoScript = async () => {
+    // payU script
+    const payUScript = async () => {
       const config = {
         headers: {
           'Content-Type': 'application/json',
         },
       }
 
-      const { data: preferenceId } = await axios.post(
-        '/api/mp',
+      const { data } = await axios.post(
+        '/api/config/payu',
         {
-          title: 'Total de la compra',
-          unit_price: order.totalPrice,
-          quantity: 1,
+          merchantId: '508029',
+          referenceCode: order._id,
+          amount: order.totalPrice,
+          currency: 'COP',
         },
         config
       )
 
-      if (preferenceId) {
-        mercadoPago.checkout({
-          preference: {
-            id: preferenceId.id,
-          },
-          render: {
-            container: '.cho-container',
-            label: 'Pagar',
-          },
-        })
+      if (data) {
+        setPayUSignature(data)
+        setPayUConfirmation(
+          `https://proshop-89al.onrender.com/api/orders/${orderId.id}/payu`
+        )
       }
     }
 
@@ -111,9 +100,9 @@ const OrderScreen = () => {
       dispatch(orderPayReset())
       dispatch(orderDeliverReset())
       dispatch(getOrderDetails(orderId.id))
-    } else if (!order.isPaid && mercadoPago) {
+    } else if (!order.isPaid) {
       if (!rendered) {
-        mercadoPagoScript()
+        payUScript()
         setRendered(true)
       }
     }
@@ -258,7 +247,56 @@ const OrderScreen = () => {
               </ListGroup.Item>
               {!order.isPaid && (
                 <ListGroup.Item>
-                  <div className='cho-container' />
+                  <div>
+                    {' '}
+                    <form
+                      method='post'
+                      action='https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu/'
+                    >
+                      <input name='merchantId' type='hidden' value='508029' />
+                      <input name='accountId' type='hidden' value='512321' />
+                      <input
+                        name='description'
+                        type='hidden'
+                        value='Valor total de la orden'
+                      />
+                      <input
+                        name='referenceCode'
+                        type='hidden'
+                        value={order._id}
+                      />
+                      <input
+                        name='amount'
+                        type='hidden'
+                        value={order.totalPrice}
+                      />
+                      <input name='tax' type='hidden' value='0' />
+                      <input name='taxReturnBase' type='hidden' value='0' />
+                      <input name='currency' type='hidden' value='COP' />
+                      <input
+                        name='signature'
+                        type='hidden'
+                        value={payUSignature}
+                      />
+                      <input name='test' type='hidden' value='1' />
+                      <input
+                        name='buyerEmail'
+                        type='hidden'
+                        value={order.user.email}
+                      />
+                      <input name='responseUrl' type='hidden' value='' />
+                      <input
+                        name='confirmationUrl'
+                        type='hidden'
+                        value={payUConfirmation}
+                      />
+                      <input
+                        name='Submit'
+                        type='submit'
+                        value='Pagar con PayU'
+                      />
+                    </form>
+                  </div>
                   {loadingPay && <Loader />}
                 </ListGroup.Item>
               )}

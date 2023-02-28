@@ -12,7 +12,7 @@ const PaymentScreen = () => {
   const navigate = useNavigate()
 
   // Set variables
-  const [paymentMethod, setPaymentMethod] = useState('PayPal')
+  const [paymentMethod, setPaymentMethod] = useState('PayU')
 
   // Get state from redux
   const cart = useSelector((state) => state.cart)
@@ -40,10 +40,10 @@ const PaymentScreen = () => {
           <Col>
             <Form.Check
               type='radio'
-              label='Paypal or Credit Card'
-              id='PayPal'
+              label='PayU (PSE, tarjeta de credito...)'
+              id='PayU'
               name='paymentMethod'
-              value='PayPal'
+              value='PayU'
               checked
               onChange={(e) => setPaymentMethod(e.target.value)}
             ></Form.Check>
