@@ -47,7 +47,7 @@ const OrderScreen = () => {
   // Set variables
   const [rendered, setRendered] = useState(false)
   const [payUSignature, setPayUSignature] = useState('')
-  const [payUConfirmation, setPayUConfirmation] = useState('')
+  //const [payUConfirmation, setPayUConfirmation] = useState('')
 
   if (!loading) {
     // Calculate prices
@@ -90,9 +90,9 @@ const OrderScreen = () => {
 
       if (data) {
         setPayUSignature(data)
-        setPayUConfirmation(
-          `https://proshop-89al.onrender.com/api/orders/${orderId.id}/payu`
-        )
+        // setPayUConfirmation(
+        //   `https://proshop-89al.onrender.com/api/orders/${orderId.id}/payu`
+        // )
       }
     }
 
@@ -292,7 +292,7 @@ const OrderScreen = () => {
                       <input
                         name='confirmationUrl'
                         type='hidden'
-                        value={payUConfirmation}
+                        value='https://proshop-89al.onrender.com/confirmationpayu'
                       />
                       <input
                         name='Submit'

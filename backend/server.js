@@ -56,7 +56,7 @@ app.get('/responsepayu', function (req, res) {
 
 app.post('/confirmationpayu', function (req, res) {
   const data = req.body
-  console.log(data)
+  res.json(data)
 })
 
 // mercadopago feedback
