@@ -284,7 +284,11 @@ const OrderScreen = () => {
                         type='hidden'
                         value={order.user.email}
                       />
-                      <input name='responseUrl' type='hidden' value='' />
+                      <input
+                        name='responseUrl'
+                        type='hidden'
+                        value='https://proshop-89al.onrender.com/response'
+                      />
                       <input
                         name='confirmationUrl'
                         type='hidden'

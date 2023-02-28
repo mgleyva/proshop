@@ -19,6 +19,7 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
+import ResponseScreen from './screens/ResponseScreen'
 
 const App = () => {
   return (
@@ -55,6 +56,7 @@ const App = () => {
               path='/search/:keyword/page/:pageNumber'
               element={<HomeScreen />}
             />
+            <Route path='/response' element={<ResponseScreen />} />
             <Route path='/' element={<HomeScreen />} />
           </Routes>
         </Container>
