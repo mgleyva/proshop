@@ -89,7 +89,8 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 // @access  Private
 const updateOrderToPaidU = asyncHandler(async (req, res) => {
   // find order by id in params.
-  const order = await Order.findById(req.params.id)
+  const saleId = req.body.reference_sale
+  const order = await Order.findById(saleId)
 
   if (order) {
     if (req.body.state_pol === 4) {

@@ -54,10 +54,11 @@ app.get('/responsepayu', function (req, res) {
   console.log(data)
 })
 
-app.post('/confirmationpayu', function (req, res) {
-  const data = req.body
-  res.json(data)
-})
+// app.post('/confirmationpayu', function (req, res) {
+//   const data = req.body
+
+//   res.json(data)
+// })
 
 // mercadopago feedback
 app.get('/feedback', function (req, res) {
