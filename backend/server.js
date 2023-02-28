@@ -9,7 +9,7 @@ import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
-import mpRoutes from './routes/mpRoutes.js'
+import payuRoutes from './routes/payuRoutes.js'
 
 dotenv.config()
 
@@ -31,7 +31,7 @@ app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/upload', uploadRoutes)
-app.use('/api/mp', mpRoutes)
+app.use('/api/config/payu', payuRoutes)
 
 // Make a folder static
 const __dirname = path.resolve()
@@ -48,6 +48,16 @@ if (process.env.NODE_ENV === 'production') {
     res.send('API is running...')
   })
 }
+// PayU feedback
+app.get('/responsepayu', function (req, res) {
+  const data = req.body
+  console.log(data)
+})
+
+app.post('/confirmationpayu', function (req, res) {
+  const data = req.body
+  console.log(data)
+})
 
 // mercadopago feedback
 app.get('/feedback', function (req, res) {
