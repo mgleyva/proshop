@@ -78,7 +78,7 @@ const OrderScreen = () => {
       }
 
       const { data } = await axios.post(
-        '/api/config/payu',
+        '/api/payu/sign',
         {
           merchantId: '508029',
           referenceCode: order._id,
