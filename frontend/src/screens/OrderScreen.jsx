@@ -292,7 +292,7 @@ const OrderScreen = () => {
                       <input
                         name='confirmationUrl'
                         type='hidden'
-                        value='https://proshop-89al.onrender.com/api/orders/confirmationpayu'
+                        value='https://proshop-89al.onrender.com/api/payu/confirmation'
                       />
                       <input
                         name='Submit'

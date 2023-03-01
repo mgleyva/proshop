@@ -84,35 +84,6 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Update order to paid
-// @route   POST /api/orders/:id/payu
-// @access  Private
-const updateOrderToPaidU = asyncHandler(async (req, res) => {
-  // find order by id in params.
-  const saleId = req.body.reference_sale
-  const order = await Order.findById(saleId)
-
-  if (order) {
-    if (req.body.state_pol === 4) {
-      order.isPaid = true
-      order.paidAt = Date.now()
-      // comes from PayU
-      order.paymentResult = {
-        id: req.body.reference_pol,
-        status: req.body.response_message_pol,
-        update_time: req.body.transaction_date,
-        email_address: req.body.email_buyer,
-      }
-
-      const updatedOrder = await order.save()
-      res.json(updatedOrder)
-    }
-  } else {
-    res.status(404)
-    throw new Error('Order not found')
-  }
-})
-
 // @desc    Get logged in user orders
 // @route   GET /api/orders/myorders
 // @access  Private
@@ -157,7 +128,6 @@ export {
   addOrderItems,
   getOrderById,
   updateOrderToPaid,
-  updateOrderToPaidU,
   updateOrderToDelivered,
   getMyOrders,
   getOrders,

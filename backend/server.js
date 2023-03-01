@@ -23,15 +23,16 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
-// To accept JSON data in the body
+// for parsing JSON and urlencoded data in the body
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // ROUTES
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/upload', uploadRoutes)
-app.use('/api/config/payu', payuRoutes)
+app.use('/api/payu', payuRoutes)
 
 // Make a folder static
 const __dirname = path.resolve()
@@ -54,32 +55,10 @@ app.get('/responsepayu', function (req, res) {
   console.log(data)
 })
 
-// app.post('/confirmationpayu', function (req, res) {
+// app.post('/confirmationtest', function (req, res) {
 //   const data = req.body
-
 //   res.json(data)
 // })
-
-// mercadopago feedback
-app.get('/feedback', function (req, res) {
-  res.json({
-    Payment: req.query.payment_id,
-    Status: req.query.status,
-    MerchantOrder: req.query.merchant_order_id,
-  })
-})
-
-app.post('/notification', function (req, res) {
-  const data = req.body
-
-  // res.json({
-  //   Payment: req.query.payment_id,
-  //   Status: req.query.status,
-  //   MerchantOrder: req.query.merchant_order_id,
-  // })
-  console.log(data)
-  //res.status(200)
-})
 
 // Errors
 app.use(notFound)
