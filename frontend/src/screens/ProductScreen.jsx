@@ -36,6 +36,8 @@ const ProductScreen = () => {
     error: errorProductReview,
   } = productReviewCreate
 
+  const walink = `https://wa.me/573107719482?text=Estoy%20interesado%20en%20este%20producto%20https://proshop-89al.onrender.com/product/${product._id}`
+
   // Dispatch action to the state
   useEffect(() => {
     if (successProductReview) {
@@ -149,6 +151,15 @@ const ProductScreen = () => {
                     >
                       Add To Cart
                     </Button>
+                    <p className='pt-4'>
+                      <a href={walink} className=''>
+                        <img
+                          className='w-100'
+                          src='/images/WhatsAppButtonGreenSmall.png'
+                          alt='Chat on WhatsApp'
+                        />
+                      </a>
+                    </p>
                   </ListGroup.Item>
                 </ListGroup>
               </Card>
