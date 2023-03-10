@@ -274,7 +274,7 @@ const OrderScreen = () => {
                       <input
                         name='confirmationUrl'
                         type='hidden'
-                        value={payUconfirmation}
+                        value='https://proshop-production-3804.up.railway.app/api/payu/confirmation'
                       />
                       <input
                         name='Submit'
