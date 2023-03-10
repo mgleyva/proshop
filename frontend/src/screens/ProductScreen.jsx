@@ -38,7 +38,7 @@ const ProductScreen = () => {
     error: errorProductReview,
   } = productReviewCreate
 
-  const walink = `https://wa.me/573107719482?text=Estoy%20interesado%20en%20este%20producto%20${urlHost}/product/${product._id}`
+  const walink = `https://wa.me/573107719482?text=Estoy%20interesado%20en%20este%20producto%20https://${urlHost}/product/${product._id}`
 
   // Dispatch action to the state
   useEffect(() => {
