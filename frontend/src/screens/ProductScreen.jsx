@@ -18,6 +18,8 @@ const ProductScreen = () => {
   const navigate = useNavigate()
   const params = useParams()
 
+  const urlHost = window.location.hostname
+
   // Set variables
   const [qty, setQty] = useState(1)
   const [rating, setRating] = useState(0)
@@ -36,7 +38,7 @@ const ProductScreen = () => {
     error: errorProductReview,
   } = productReviewCreate
 
-  const walink = `https://wa.me/573107719482?text=Estoy%20interesado%20en%20este%20producto%20https://proshop-89al.onrender.com/product/${product._id}`
+  const walink = `https://wa.me/573107719482?text=Estoy%20interesado%20en%20este%20producto%20${urlHost}/product/${product._id}`
 
   // Dispatch action to the state
   useEffect(() => {

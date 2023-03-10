@@ -27,6 +27,11 @@ const OrderScreen = () => {
   const navigate = useNavigate()
   const orderId = useParams()
 
+  // PayU urls
+  const urlHost = window.location.hostname
+  const payUresponse = `${urlHost}/response`
+  const payUconfirmation = `${urlHost}/api/payu/confirmation`
+
   // Get state from redux
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
@@ -47,7 +52,6 @@ const OrderScreen = () => {
   // Set variables
   const [rendered, setRendered] = useState(false)
   const [payUSignature, setPayUSignature] = useState('')
-  //const [payUConfirmation, setPayUConfirmation] = useState('')
 
   if (!loading) {
     // Calculate prices
@@ -90,9 +94,6 @@ const OrderScreen = () => {
 
       if (data) {
         setPayUSignature(data)
-        // setPayUConfirmation(
-        //   `https://proshop-89al.onrender.com/api/orders/${orderId.id}/payu`
-        // )
       }
     }
 
@@ -112,25 +113,6 @@ const OrderScreen = () => {
   const deliverHandler = () => {
     dispatch(deliverOrder(order))
   }
-
-  // Handlers Paypal
-  // const createOrder = (data, actions) => {
-  //   return actions.order.create({
-  //     purchase_units: [
-  //       {
-  //         amount: {
-  //           value: order.totalPrice,
-  //         },
-  //       },
-  //     ],
-  //   })
-  // }
-  // const onApprove = (data, actions) => {
-  //   return actions.order.capture().then((details) => {
-  //     console.log(details)
-  //     dispatch(payOrder(orderId.id, details))
-  //   })
-  // }
 
   // Screen
   return loading ? (
@@ -287,12 +269,12 @@ const OrderScreen = () => {
                       <input
                         name='responseUrl'
                         type='hidden'
-                        value='https://proshop-89al.onrender.com/response'
+                        value={payUresponse}
                       />
                       <input
                         name='confirmationUrl'
                         type='hidden'
-                        value='https://proshop-89al.onrender.com/api/payu/confirmation'
+                        value={payUconfirmation}
                       />
                       <input
                         name='Submit'
