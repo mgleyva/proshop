@@ -29,11 +29,7 @@ const OrderScreen = () => {
 
   // PayU urls
   const urlHost = window.location.hostname
-  //const payUresponse = 'https://proshop-production-3804.up.railway.app/response'
-  //const payUresponse = 'https://proshop-89al.onrender.com/response'
   const payUresponse = `https://${urlHost}/response`
-  //const payUconfirmation = 'https://proshop-production-3804.up.railway.app/api/payu/confirmation'
-  //const payUconfirmation = 'https://proshop-89al.onrender.com/api/payu/confirmation'
   const payUconfirmation = `https://${urlHost}/api/payu/confirmation`
 
   // Get state from redux

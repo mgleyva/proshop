@@ -9,30 +9,46 @@ const router = express.Router()
 // Config
 const payuConfirmation = asyncHandler(async (req, res) => {
   const saleId = req.body.reference_sale
-  const state = Number(req.body.state_pol)
+  // const state = Number(req.body.state_pol)
 
   //find order by sale id in body.
   const order = await Order.findById(saleId)
 
   if (order) {
-    if (state === 4) {
-      order.isPaid = true
-      order.paidAt = Date.now()
-      // comes from PayU
-      order.paymentResult = {
-        id: req.body.reference_pol,
-        status: req.body.response_message_pol,
-        email_address: req.body.email_buyer,
-        update_time: req.body.transaction_date,
-      }
-
-      const updatedOrder = await order.save()
-      res.json(updatedOrder)
+    order.paymentResult = {
+      state: req.body.state_pol,
+      id: req.body.reference_pol,
+      status: req.body.response_message_pol,
+      email_address: req.body.email_buyer,
+      update_time: req.body.transaction_date,
     }
+
+    const updatedOrder = await order.save()
+    res.json(updatedOrder)
   } else {
     res.status(404)
     throw new Error('Order not found')
   }
+
+  // if (order) {
+  //   if (state === 4) {
+  //     order.isPaid = true
+  //     order.paidAt = Date.now()
+  //     // comes from PayU
+  //     order.paymentResult = {
+  //       id: req.body.reference_pol,
+  //       status: req.body.response_message_pol,
+  //       email_address: req.body.email_buyer,
+  //       update_time: req.body.transaction_date,
+  //     }
+
+  //     const updatedOrder = await order.save()
+  //     res.json(updatedOrder)
+  //   }
+  // } else {
+  //   res.status(404)
+  //   throw new Error('Order not found')
+  // }
 })
 
 const payuSignature = (req, res) => {

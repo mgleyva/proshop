@@ -38,6 +38,7 @@ const orderSchema = mongoose.Schema(
     },
     // Comes from Paypal
     paymentResult: {
+      state: { type: Number },
       id: { type: String },
       status: { type: String },
       update_time: { type: String },
