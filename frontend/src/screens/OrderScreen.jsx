@@ -30,7 +30,7 @@ const OrderScreen = () => {
   // PayU urls
   const urlHost = window.location.hostname
   const payUresponse = `https://${urlHost}/response`
-  const payUconfirmation = `https://${urlHost}/api/payu/confirmation`
+  const payUconfirmation = `https://${urlHost}/api/payu/confirmation/`
 
   // Get state from redux
   const orderDetails = useSelector((state) => state.orderDetails)
