@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './config/db.js'
+import fs from 'fs'
 
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
@@ -19,13 +20,35 @@ connectDB()
 const app = express()
 
 // Morgan only in development mode
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'))
-}
+// if (process.env.NODE_ENV === 'development') {
+//   app.use(morgan('dev'))
+// }
+
+const __dirname = path.resolve()
 
 // for parsing JSON and urlencoded data in the body
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// create a write stream (in append mode)
+let logStream = fs.createWriteStream(path.join(__dirname, '/public/log.txt'), {
+  flags: 'a',
+})
+
+// morgan: token
+morgan.token('body', (req) => {
+  return JSON.stringify(req.body)
+})
+
+// morgan: setup the logger
+app.use(
+  morgan(
+    ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" :body',
+    {
+      stream: logStream,
+    }
+  )
+)
 
 // ROUTES
 app.use('/api/products', productRoutes)
@@ -35,8 +58,10 @@ app.use('/api/upload', uploadRoutes)
 app.use('/api/payu', payuRoutes)
 
 // Make a folder static
-const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+
+// Make a folder public
+app.use(express.static(__dirname + '/public'))
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/frontend/build')))
@@ -52,16 +77,12 @@ if (process.env.NODE_ENV === 'production') {
     res.send('API is running...')
   })
 }
+
 // PayU feedback
 app.get('/responsepayu', function (req, res) {
   const data = req.body
   console.log(data)
 })
-
-// app.post('/confirmationtest', function (req, res) {
-//   const data = req.body
-//   res.json(data)
-// })
 
 // Errors
 app.use(notFound)
