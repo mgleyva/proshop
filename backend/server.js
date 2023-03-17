@@ -30,17 +30,15 @@ const __dirname = path.resolve()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// create a write stream (in append mode)
+// MORGAN: begins
 let logStream = fs.createWriteStream(path.join(__dirname, '/public/log.txt'), {
   flags: 'a',
 })
 
-// morgan: token
 morgan.token('body', (req) => {
   return JSON.stringify(req.body)
 })
 
-// morgan: setup the logger
 app.use(
   morgan(
     ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" :body',
@@ -49,6 +47,7 @@ app.use(
     }
   )
 )
+// MORGAN: ends
 
 // ROUTES
 app.use('/api/products', productRoutes)
@@ -66,10 +65,13 @@ app.use(express.static(__dirname + '/public'))
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/frontend/build')))
 
-  // app.get('*', (req, res) =>
+  // app.get('/response', (req, res) =>
   //   res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
   // )
-  app.get('/response', (req, res) =>
+
+  app.get('/api/payu/confirmation', (req, res) => res.send('URL not found'))
+
+  app.get('*', (req, res) =>
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
   )
 } else {
